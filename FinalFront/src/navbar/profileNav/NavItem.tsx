@@ -23,7 +23,11 @@ export const NavItem = ({ title, icon, navSize, active }: any) => {
                 fontSize="xl"
                 color={active ? "#82AAAD" : "gray.500"}
               />
-              <Text ml="5" display={navSize === "small" ? "none" : "flex"}>
+              <Text
+                ml="5"
+                display={navSize === "small" ? "none" : "flex"}
+                color="gray.700"
+              >
                 {title}
               </Text>
             </Flex>

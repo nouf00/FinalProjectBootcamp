@@ -21,18 +21,86 @@ import { Button, ButtonGroup, FormControl, FormLabel, IconButton, Input,
     MenuButton,
     Menu,
     MenuList,
-    MenuItem, } from "@chakra-ui/react"
+    MenuItem,
+    useToast, } from "@chakra-ui/react"
     import { IoIosAddCircle , IoMdClose} from "react-icons/io";
   import { useEffect, useRef, useState } from 'react';
   import { ChevronDownIcon } from "@chakra-ui/icons";
+  import { useNavigate } from "react-router-dom";
+ 
   
   
    function AddNewPost(){
+
+    
+    const [item, setItem] = useState<string[]>([]);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [price, setPrice] = useState("");
+    const [type, setType] = useState("");
+    const [image, setImage] = useState("");
+    const toast = useToast();
+
+
+
   
     const { isOpen, onOpen, onClose } = useDisclosure()
     
       const initialRef = useRef(null)
       const finalRef = useRef(null)
+
+      const addNewItem = async () => {
+        if (!title && !description && !price && !type) {
+          toast({
+            title: " all fileds are required ",
+            status: "error",
+            duration: 3000,
+            position: "top",
+          });
+    
+          return;
+        }
+    
+        try {
+          const request = await fetch("/api/v1/chefpage", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            body: JSON.stringify({
+              title: title,
+              discrbtion: description,
+              prise: Number(price),
+              type: type,
+              image: image,
+            }),
+          });
+          const data = await request.json();
+    
+          if (request.status !== 200) {
+            toast({
+              title: data.message,
+              status: "error",
+              duration: 3000,
+              position: "top",
+            });
+            return;
+          }
+          fetchItem();
+          setTitle("");
+          setDescription("");
+          setPrice("");
+          onClose();
+    
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      useEffect(() => {
+        fetchItem();
+      }, []);
   
     return (
       <>
@@ -96,3 +164,7 @@ Select     </MenuButton>
     )
   }
   export default AddNewPost;
+
+function fetchItem() {
+  throw new Error("Function not implemented.");
+}

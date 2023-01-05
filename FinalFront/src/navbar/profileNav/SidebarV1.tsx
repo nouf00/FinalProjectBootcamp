@@ -1,6 +1,6 @@
 import { Flex, HStack, Text } from "@chakra-ui/react";
 import React from "react";
-import ProfileNav from "../profileNav/ProfileNav";
+import ProfileNav from "./ProfileNav";
 
 const SidebarV1 = () => {
   return (
