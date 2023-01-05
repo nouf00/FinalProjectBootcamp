@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+
+
+
+
+
+
+model FoodItem {
+  itemid String @id @default(uuid())
+    type Type
+   title String 
+  discrbtion String
+  image String ?
+  prise Int
+   chef_id String
+  chef_ Chef  @relation(fields: [chef_id],references: [id])
+  createAt DateTime @default(now())
+
+  @@index([chef_id])
+}
+
+enum Type{
+  Main_dishes
+  Entrees
+  Traditional
+  Dessert
+  Healthy
+  Drink
+
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+model Foody{
+  id String @id @default(uuid())
+  username String @unique()
+  password String
+  // phone String @unique()
+  email String @unique()
+  city City
+  role String @default("Foody")
+}
+
+model Chef{
+  id String @id @default(uuid())
+  username String @unique()
+  password String
+  // phone String @unique()
+  projectName String
+  email String @unique()
+  city City
+  role String @default("Chef")
+  fooditem FoodItem[]
+
+}
+enum City{
+  Riyadh
+  Jeddah
+  Dammam
+}
+
+// ------------------------------------------------------------------------------------------------------- most be put the chat model here 
